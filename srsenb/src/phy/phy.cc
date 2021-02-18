@@ -192,16 +192,15 @@ void phy::set_activation_deactivation_scell(uint16_t rnti, const std::array<bool
 
 void phy::get_metrics(phy_metrics_t metrics[ENB_METRICS_MAX_USERS])
 {
-  phy_metrics_t metrics_tmp[ENB_METRICS_MAX_USERS] = {};
-
-  uint32_t nof_users = workers[0].get_nof_rnti();
   bzero(metrics, sizeof(phy_metrics_t) * ENB_METRICS_MAX_USERS);
+
+  uint32_t      nof_users                          = SRSLTE_MIN(workers[0].get_nof_rnti(), ENB_METRICS_MAX_USERS);
+  phy_metrics_t metrics_tmp[ENB_METRICS_MAX_USERS] = {};
   for (uint32_t i = 0; i < nof_workers; i++) {
     workers[i].get_metrics(metrics_tmp);
     for (uint32_t j = 0; j < nof_users; j++) {
       metrics[j].dl.n_samples += metrics_tmp[j].dl.n_samples;
       metrics[j].dl.mcs += metrics_tmp[j].dl.n_samples * metrics_tmp[j].dl.mcs;
-
       metrics[j].ul.n_samples += metrics_tmp[j].ul.n_samples;
       metrics[j].ul.mcs += metrics_tmp[j].ul.n_samples * metrics_tmp[j].ul.mcs;
       metrics[j].ul.n += metrics_tmp[j].ul.n_samples * metrics_tmp[j].ul.n;
