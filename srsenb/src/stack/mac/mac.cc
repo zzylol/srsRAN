@@ -281,6 +281,9 @@ void mac::get_metrics(mac_metrics_t metrics[ENB_METRICS_MAX_USERS])
   srslte::rwlock_read_guard lock(rwlock);
   int                       cnt = 0;
   for (auto& u : ue_db) {
+    if (cnt == ENB_METRICS_MAX_USERS) {
+      return;
+    }
     u.second->metrics_read(&metrics[cnt]);
     cnt++;
   }
