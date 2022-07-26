@@ -213,7 +213,7 @@ using paging_record_list_l = dyn_array<paging_record_s>;
 // Paging ::= SEQUENCE
 struct paging_s {
   bool                 paging_record_list_present = false;
-  bool                 sys_info_mod_present       = false;
+  bool                 sys_info_mod_present       = false; // ** Modified **
   bool                 etws_ind_present           = false;
   bool                 non_crit_ext_present       = false;
   paging_record_list_l paging_record_list;

@@ -820,6 +820,8 @@ uint32_t rrc::generate_sibs()
 
     // Copy SIB1 to first SI message
     msg[0].msg.set_c1().set_sib_type1() = cell_ctxt->sib1;
+    /** Modified by Zeying **/
+    // msg[0].msg.set_c1().set_sib_type1().cell_access_related_info.tac.from_number(uint64_t(2)); // a random number 
 
     // Copy rest of SIBs
     for (uint32_t sched_info_elem = 0; sched_info_elem < nof_messages - 1; sched_info_elem++) {
