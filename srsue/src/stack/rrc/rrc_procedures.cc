@@ -1169,8 +1169,12 @@ proc_outcome_t rrc::process_pcch_proc::step()
         Info("Received paging for unknown identity");
       }
     }
-    if (paging.sys_info_mod_present) {
+    // if (paging.sys_info_mod_present) {
+    if (RRC_STATE_IDLE == rrc_ptr->state or RRC_STATE_CONNECTED == rrc_ptr->state) { // assume paging.sys_info_mod_present always == true
       Info("Received System Information notification update request.");
+      paging.sys_info_mod_present = true;
+      Info("Attacker modified paging.sys_info_mod_present to be true.");
+      srsran::console("Attacker modified paging.sys_info_mod_present to be true.\n");
       // invalidate and then update all SIBs of serving cell
       rrc_ptr->meas_cells.serving_cell().reset_sibs();
 
@@ -1179,10 +1183,16 @@ proc_outcome_t rrc::process_pcch_proc::step()
         Error("Failed to initiate a serving cell configuration procedure");
         return proc_outcome_t::error;
       }
-    } else {
+      else {
+
+      }
+    } 
+    /*
+    else {
       Info("Completed successfully");
       return proc_outcome_t::success;
     }
+    */
     state = state_t::serv_cell_cfg;
     return step();
   } else if (state == state_t::nas_paging) {
